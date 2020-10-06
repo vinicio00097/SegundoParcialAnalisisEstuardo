@@ -6,8 +6,11 @@ import com.example.segundoparcial.Service.IHardware;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class HardwareService implements IHardware {
@@ -15,8 +18,13 @@ public class HardwareService implements IHardware {
     private IHardwareDAO hardwareDAO;
 
     @Override
-    public List<Hardware> getAll() {
-        return hardwareDAO.findAll();
+    public List<Object> getAll() {
+        try {
+            return Arrays.asList(1,hardwareDAO.findAll());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Collections.singletonList(0);
+        }
     }
 
     @Override
@@ -25,17 +33,34 @@ public class HardwareService implements IHardware {
     }
 
     @Override
-    public void delete(int id) {
+    public List<Object> delete(int id) {
+        try {
+            hardwareDAO.deleteById(id);
 
+            return Collections.singletonList(1);
+        }catch (Exception e){
+            e.printStackTrace();
+            return Collections.singletonList(0);
+        }
     }
 
     @Override
-    public Hardware add(Hardware object) {
-        return null;
+    public List<Object> add(Hardware object) {
+        try {
+            return Arrays.asList(1,hardwareDAO.save(object));
+        }catch (Exception e){
+            e.printStackTrace();
+            return Collections.singletonList(0);
+        }
     }
 
     @Override
-    public Hardware update(Hardware object) {
-        return null;
+    public List<Object> update(Hardware object) {
+        try{
+            return Arrays.asList(1,hardwareDAO.save(object));
+        }catch (Exception e){
+            e.printStackTrace();
+            return Collections.singletonList(0);
+        }
     }
 }

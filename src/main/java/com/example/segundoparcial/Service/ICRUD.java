@@ -4,9 +4,9 @@ import java.util.List;
 import java.util.Optional;
 
 public interface ICRUD<T>{
-    List<T> getAll();
+    List<Object> getAll();
     Optional<T> get();
-    void delete(int id);
-    T add(T object);
-    T update(T object);
+    List<Object> delete(int id);
+    List<Object> add(T object);
+    List<Object> update(T object);
 }

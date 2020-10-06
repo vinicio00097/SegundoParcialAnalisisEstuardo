@@ -3,11 +3,13 @@ package com.example.segundoparcial.ImplementedServices;
 import com.example.segundoparcial.Dao.IUsersDAO;
 import com.example.segundoparcial.Model.Users;
 import com.example.segundoparcial.Service.IUser;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Optional;
+import java.sql.SQLException;
+import java.util.*;
 
 @Service
 public class UsersService implements IUser {
@@ -15,8 +17,13 @@ public class UsersService implements IUser {
     private IUsersDAO usersDAO;
 
     @Override
-    public List<Users> getAll() {
-        return usersDAO.findAll();
+    public List<Object> getAll() {
+        try {
+            return Arrays.asList(1,usersDAO.findAll());
+        }catch (Exception e){
+            e.printStackTrace();
+            return Collections.singletonList(0);
+        }
     }
 
     @Override
@@ -25,22 +32,36 @@ public class UsersService implements IUser {
     }
 
     @Override
-    public void delete(int id) {
-        usersDAO.deleteById(id);
-    }
-
-    @Override
-    public Users add(Users object) {
+    public List<Object> delete(int id) {
         try{
-            return usersDAO.save(object);
+            usersDAO.deleteById(id);
+            return Collections.singletonList(1);
         }catch (Exception e){
             e.printStackTrace();
-            return new Users();
+            return Collections.singletonList(0);
         }
     }
 
     @Override
-    public Users update(Users object) {
-        return usersDAO.save(object);
+    public List<Object> add(Users object) {
+        try{
+            return Arrays.asList(1,usersDAO.save(object));
+        }catch (Exception e){
+            e.printStackTrace();
+            return Collections.singletonList(0);
+        }
+    }
+
+    @Override
+    public List<Object> update(Users object) {
+        try{
+            return Arrays.asList(1,usersDAO.save(object))  ;
+        } catch (DataIntegrityViolationException e){
+            e.printStackTrace();
+            return Collections.singletonList(2);
+        } catch (Exception e){
+            e.printStackTrace();
+            return Collections.singletonList(0);
+        }
     }
 }

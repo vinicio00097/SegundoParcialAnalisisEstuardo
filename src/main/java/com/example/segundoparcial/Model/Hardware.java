@@ -1,6 +1,7 @@
 package com.example.segundoparcial.Model;
 
 import org.apache.catalina.User;
+import org.hibernate.annotations.Where;
 import org.springframework.lang.NonNullFields;
 
 import javax.persistence.*;

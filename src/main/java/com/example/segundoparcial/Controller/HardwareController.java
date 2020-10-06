@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/Hardware")
 public class HardwareController {
@@ -17,6 +19,12 @@ public class HardwareController {
 
     @GetMapping("")
     public ResponseEntity<Object> index(){
-        return new ResponseEntity<>(new JsonResponse("Success",11,hardwareService.getAll(),"Hardware recuperado correctamente"), HttpStatus.OK);
+        List<Object> result=hardwareService.getAll();
+
+        if(((int) result.get(0))==1){
+            return new ResponseEntity<>(new JsonResponse("Success",11,result.get(1),"Hardware recuperado correctamente"), HttpStatus.OK);
+        }else{
+            return new ResponseEntity<>(new JsonResponse("Success",16,null,"Hubo un error al recuperar la lista de hardware."), HttpStatus.OK);
+        }
     }
 }
